@@ -79,7 +79,7 @@ let counter=iterations/100;
     }
     y.pop();
     y.push(']');
-/*
+
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
         let try_running=py.run(
@@ -108,25 +108,6 @@ plt.show()",
         }
         Ok(())
     })
-    */
-    pyo3::prepare_freethreaded_python();
-    let python_code="import numpy as np
-import matplotlib.pyplot as plt
-def funce(y):
-    x=np.linspace(0,len(y),len(y))
-    plt.xlabel(\"Energy \\n The initial energy was {}. The number of cells was {}. The number of iterations was {}. \")
-    plt.ylabel('Cells with energy')
-    plt.plot(x,y)
-    plt.show()";
-        Python::with_gil(|py| {
-        let fun: Py<PyAny> = PyModule::from_code(
-            py,
-            &*python_code,
-            "",
-            "",
-        ).unwrap()
-        .getattr("funce").unwrap().into();
-         let _ =  fun.call1(py, (score)));
-Ok(())
-    })
+//This is a slightly janky way to use python code but it is far more readable than the intended way to pass arrays to python.
+//It somehow even ends up being slightly faster than passing arrays by calling a function with call1
 }
