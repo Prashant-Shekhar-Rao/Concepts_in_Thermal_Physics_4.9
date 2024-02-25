@@ -1,2 +1,5 @@
-/target
+!target/
+target/*
+!target/release/
+target/release/*
 !target/release/boltzman.exe
